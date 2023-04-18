@@ -5,6 +5,6 @@ scikit-learn
 matplotlib
 catboost
 xgboost
-dill
 Flask
--e .
+cufflinks
+#-e .

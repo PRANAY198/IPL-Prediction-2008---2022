@@ -1,104 +1,45 @@
-
-from fileinput import filename
-import re
-from flask import Flask, render_template, request
-import pickle
 import numpy as np
-import pandas as pd
-
-model= pickle.load(open('model.pkl','rb'))
+import pickle
+from flask import Flask, request, render_template
+from sklearn.preprocessing import LabelEncoder
 
 app = Flask(__name__)
 
+lc= LabelEncoder()
+
+# Load the machine learning model
+loaded_model = pickle.load(open("model.pkl", "rb"))
+
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@app.route('/predict',methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    temp_array = list()
-
     if request.method == 'POST':
-        Batting_Team = request.form['BattingTeam']
-        if Batting_Team == 'Chennai Super Kings':
-            temp_array = temp_array + [1,0,0,0,0,0,0,0,0,0]
-        elif Batting_Team == 'Delhi Capitals':
-            temp_array = temp_array + [0,1,0,0,0,0,0,0,0,0]
-        elif Batting_Team == 'Gujarat Titans':
-            temp_array = temp_array + [0,0,1,0,0,0,0,0,0,0]
-        elif Batting_Team == 'Kings XI Punjab':
-            temp_array = temp_array + [0,0,0,1,0,0,0,0,0,0]
-        elif Batting_Team == 'Kolkata Knight Riders':
-            temp_array = temp_array + [0,0,0,0,1,0,0,0,0,0]
-        elif Batting_Team == 'Lucknow Super Giants':
-            temp_array = temp_array + [0,0,0,0,0,1,0,0,0,0]
-        elif Batting_Team == 'Mumbai Indians':
-            temp_array = temp_array + [0,0,0,0,0,0,1,0,0,0]
-        elif Batting_Team == 'Rajasthan Royals':
-            temp_array = temp_array + [0,0,0,0,0,0,0,1,0,0]
-        elif Batting_Team == 'Royal Challengers Bangalore':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,1,0]
-        elif Batting_Team == 'Sunrisers Hyderabad':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,0,1]
-            
-            
-        Bowling_Team = request.form['BowlingTeam']
-        if Bowling_Team == 'Chennai Super Kings':
-            temp_array = temp_array + [1,0,0,0,0,0,0,0,0,0]
-        elif Bowling_Team == 'Delhi Capitals':
-            temp_array = temp_array + [0,1,0,0,0,0,0,0,0,0]
-        elif Bowling_Team == 'Gujarat Titans':
-            temp_array = temp_array + [0,0,1,0,0,0,0,0,0,0]
-        elif Bowling_Team == 'Kings XI Punjab':
-            temp_array = temp_array + [0,0,0,1,0,0,0,0,0,0]
-        elif Bowling_Team == 'Kolkata Knight Riders':
-            temp_array = temp_array + [0,0,0,0,1,0,0,0,0,0]
-        elif Bowling_Team == 'Lucknow Super Giants':
-            temp_array = temp_array + [0,0,0,0,0,1,0,0,0,0]
-        elif Bowling_Team == 'Mumbai Indians':
-            temp_array = temp_array + [0,0,0,0,0,0,1,0,0,0]
-        elif Bowling_Team == 'Rajasthan Royals':
-            temp_array = temp_array + [0,0,0,0,0,0,0,1,0,0]
-        elif Bowling_Team == 'Royal Challengers Bangalore':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,1,0]
-        elif Bowling_Team == 'Sunrisers Hyderabad':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,0,1]
-            
-        
-        venue_selection = request.form['Venue']
-        if venue_selection == 'Arun Jaitley Stadium':
-            temp_array = temp_array + [1,0,0,0,0,0,0,0,0,0]
-        elif venue_selection == 'Dr DY Patil Sports Academy, Mumbai':
-            temp_array = temp_array + [0,1,0,0,0,0,0,0,0,0]
-        elif venue_selection == 'Eden Gardens, Kolkata':
-            temp_array = temp_array + [0,0,1,0,0,0,0,0,0,0]
-        elif venue_selection == 'MA Chidambaram Stadium, Chepauk':
-            temp_array = temp_array + [0,0,0,1,0,0,0,0,0,0]
-        elif venue_selection == 'M Chinnaswamy Stadium':
-            temp_array = temp_array + [0,0,0,0,1,0,0,0,0,0]
-        elif venue_selection == 'Narendra Modi Stadium, Ahmedabad':
-            temp_array = temp_array + [0,0,0,0,0,1,0,0,0,0]
-        elif venue_selection == 'Punjab Cricket Association IS Bindra Stadium':
-            temp_array = temp_array + [0,0,0,0,0,0,1,0,0,0]
-        elif venue_selection == 'Rajiv Gandhi International Stadium, Uppal':
-            temp_array = temp_array + [0,0,0,0,0,0,0,1,0,0]
-        elif venue_selection == 'Sawai Mansingh Stadium':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,1,0]
-        elif venue_selection == 'Wankhede Stadium':
-            temp_array = temp_array + [0,0,0,0,0,0,0,0,0,1]
-
-        Current_Score = int(request.form['current_score'])
-        Wickets_Left = int(request.form['wickets_left'])
+        # Convert categorical form data to numeric labels
+        TossWinner = float(lc.fit_transform([request.form['TossWinner']])[0])
+        BattingTeam = float(lc.fit_transform([request.form['BattingTeam']])[0])
+        BowlingTeam = float(lc.fit_transform([request.form['BowlingTeam']])[0])
+        TossDecision = float(lc.fit_transform([request.form['TossDecision']])[0])
+        batter = float(lc.fit_transform([request.form['batter']])[0])
+        non_striker = float(lc.fit_transform([request.form['non_striker']])[0])
+        bowler = float(lc.fit_transform([request.form['bowler']])[0])
+        Venue = float(lc.fit_transform([request.form['Venue']])[0])
+        First_Innings_total_score = float(request.form['First_Innings_total_score'])
+        current_score = float(request.form['current_score'])
+        wickets_left = float(request.form['wickets_left'])
         Overs = float(request.form['Overs'])
-        Current_Run_Rate = float(request.form['current_run_rate'])
-        Required_Run_Rate = float(request.form['required_run_rate'])
-
-        temp_array = temp_array + [Current_Score,Wickets_Left,Overs,Current_Run_Rate,Required_Run_Rate]
-
-        data = np.array([temp_array])
-        my_prediction = int(model.predict(data)[[0]])
-
-        return render_template('result.html',Final_Score = my_prediction)
+        current_run_rate = float(request.form['current_run_rate'])
+        required_run_rate = float(request.form['required_run_rate'])
+        # Convert form data into input features
+        input_features = np.array([TossWinner,  BattingTeam, BowlingTeam,TossDecision, batter,non_striker,bowler,Venue,First_Innings_total_score,current_score,wickets_left,Overs,current_run_rate,required_run_rate])
+        
+        # Perform prediction
+        result = loaded_model.predict(input_features)
+        
+        # Render the prediction result in a template
+        return render_template("result.html", Final_Score=int(result),openet=First_Innings_total_score)
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)

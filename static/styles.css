@@ -208,7 +208,6 @@ body{
 
 /* Footer */
 .footer{
-	background-color: #E9E9E9;
 	color: #000000;
 	padding: 12px;
     text-align: center;
@@ -234,7 +233,7 @@ body{
   display: inline-block;
   width: auto;
   height: 429px;
-  line-height: 400px;
+  line-height: 200px;
   text-align: center;
 }
 

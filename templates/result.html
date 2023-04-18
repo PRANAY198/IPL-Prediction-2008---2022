@@ -76,9 +76,14 @@
             </div>
 
 			<!-- Result -->
-			<div class="results">
-				<p class='result-p'>The final IPL predicted score : {{ Final_Score }}</p>
-			</div>
+			<div class="results" style="font-size: 12px;">
+                {% if Final_Score > openet %}
+                    <p class='results'>Congratulations! You have beaten the target with a score of {{openet}}/{{Final_Score}}.</p>
+                {% else %}
+                    <p class='results'>Unfortunately, you have failed to beat the target {{openet}}/{{Final_Score}}.</p>
+                {% endif %}
+            </div>
+            
 
             <!-- IPL Banner - 2 -->
             <div class='ipl-banner-right'>
@@ -136,6 +141,35 @@
         <!-- Footer -->
        <div class='footer'>
            <div class="contact">
+            <style>
+                /* Footer */
+                .footer{
+                    color: #000000;
+                    padding: 12px;
+                    text-align: center;
+                    width: auto;
+                    height: 100px;
+                    position: fixed;
+                    left: 0;
+                    right: 0;
+                    top: 75%; /* Adjust the value to move the footer up or down */
+                }
+
+                .contact-icon{
+                    color: #000000;
+                    padding: 7px;
+                }
+
+                .contact-icon:hover{
+                    color: #a6a19a;
+                }
+
+                .footer-description{
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 100;
+                }
+            </style>
                <a target="_blank" href="https://github.com/PRANAY198"><i class="fab fa-github fa-lg contact-icon"></i></a>
                <a target="_blank" href="https://www.linkedin.com/in/pranay-42291919a"><i class="fab fa-linkedin fa-lg contact-icon"></i></a>
            </div>
