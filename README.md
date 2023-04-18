@@ -34,4 +34,4 @@ Describe on Datasets
 
 # Exploratory Data Analysis Notebook
 
-Link : [EDA Notebook](./NoteBook/IPL%20Prediction.ipynb)
+Link : [END to End IPL Notebook](./NoteBook/IPL%20Prediction.ipynb)
