@@ -27,7 +27,7 @@ Describe on Datasets
 ![image](https://user-images.githubusercontent.com/106003797/232563042-61ea0367-c0ad-4da1-8f93-a6b908519524.png)
 
 # Screenshot of Data of HomePage
-![image](https://user-images.githubusercontent.com/106003797/232561742-42132b3a-dd98-46e4-835b-f750e71c5c56.png)
+![image](https://user-images.githubusercontent.com/106003797/232686814-fbed1e08-05aa-4dfb-aafb-bc83d5cc123a.png)
 
 # Screenshot of Prediction Page
 ![image](https://user-images.githubusercontent.com/106003797/232562678-63b96869-fe30-4f85-9392-adab252b2e9f.png)
